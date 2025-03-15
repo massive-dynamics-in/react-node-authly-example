@@ -3,10 +3,6 @@ import axios from 'axios';
 
 class AuthlyRedirect extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     async componentDidMount() {
         // get query params
         const urlParams = new URLSearchParams(window.location.search);
@@ -28,10 +24,10 @@ class AuthlyRedirect extends React.Component {
                 token
             });
             if (response?.data?.success) {
-                alert('Login success');
                 localStorage.setItem('authly_token', token);
                 localStorage.setItem('authly_email', email);
                 window.location.href = '/loggedin';
+                return;
             } else {
                 alert('Login failed');
                 window.location.href = '/login';
@@ -44,7 +40,7 @@ class AuthlyRedirect extends React.Component {
     render() {
         return (
             <div>
-                <h1>AuthlyRedirect</h1>
+                <h1>Verifying</h1>
             </div>
         );
     }

@@ -6,11 +6,36 @@ import { Button, Stack, Typography } from '@mui/material';
 class Login extends React.Component {
 
 
+    componentDidMount() {
+        this.isAlreadyAuthenticated();
+    }
+
     loginWithAuthly = async () => {
         try {
             const response = await axios.get('http://localhost:4000/oauth/authly/login');
             if (response?.data?.link) {
                 window.location.href = response.data.link;
+            }
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    isAlreadyAuthenticated = async () => {
+        let token = localStorage.getItem('authly_token');
+        if (!token || token === '' || token === 'undefined') {
+            localStorage.removeItem('authly_token');
+            localStorage.removeItem('authly_email');
+            return;
+        }
+
+        try {
+            const response = await axios.post('http://localhost:4000/oauth/authly/verify', {
+                token
+            });
+            if (response?.data?.success) {
+                window.location.href = '/loggedin';
+                return;
             }
         } catch (error) {
             console.error(error.message);

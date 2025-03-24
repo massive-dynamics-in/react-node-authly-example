@@ -18,7 +18,7 @@ const port = process.env.PORT || 4000;
 
 app.get('/oauth/authly/login', async (req, res) => {
     try {
-        let authly_login_url = await authly.generateAppAuthLink();
+        let authly_login_url = await authly.generateAuthLink();
         return res.status(200).json(authly_login_url);
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -36,7 +36,7 @@ app.post('/oauth/authly/verify', async (req, res) => {
 
 app.post('/oauth/authly/logout', async (req, res) => {
     try {
-        let authly_logout = await authly.logout(req?.body?.token);
+        let authly_logout = await authly.logoutSession(req?.body?.token);
         return res.status(200).json(authly_logout);
     } catch (error) {
         return res.status(500).json({ message: error.message });
